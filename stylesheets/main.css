@@ -1,0 +1,9 @@
+.weapons{
+	position: relative;
+	left: -200px;
+	top: 510px;
+}
+button{
+	width: 80px;
+	height: 30px;
+}
