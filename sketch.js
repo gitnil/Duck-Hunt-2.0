@@ -2,9 +2,12 @@ var bg;
 var counter1;
 var counter2; 
 var counter3, counter4; 
+var pistol; 
 function preload(){
   bg = loadImage("images/duckhunt-uncleaned2.jpg");
   coin = loadImage("images/coin.png");
+  pistol = loadImage("images/pistol.png");
+  pistolFlip = loadImage("images/pistolFlip.png");  
 
   // hammer = loadImage("images/hammer.png");
   // evil = loadSound("sound/evil.wav");
@@ -14,6 +17,8 @@ function preload(){
 function setup() {
   bg.resize(640,480);
   coin.resize(20,20);
+  pistol.resize(200,200);
+  pistolFlip.resize(200,200);
   createCanvas(640, 480);
   counter1 = 0;
   counter2 = 2500;
@@ -49,8 +54,86 @@ function draw(){
   fill(255,255,255);
   text("x"+counter4,222,32);
 
+  var gun = new Gun("pistol",1.0);
+  gun.display();
 
 
+
+}
+
+class Gun{
+  constructor(name, speed){
+    this.type = name;
+    this.bullets = 3;
+    this.speed = speed;
+    if (name == "pistol"){
+      this.image = pistol;
+      this.imageFlip = pistolFlip;
+    }
+  }
+
+
+shot(){
+
+} 
+
+display(){
+  imageMode(CENTER);
+  push();
+  translate(300,460);
+  if (mouseX > 500){
+    rotate(radians(310));
+    image(this.imageFlip,0,0);
+  }
+  if (mouseX > 400 && mouseX < 500){
+    rotate(radians(300));
+    image(this.imageFlip,0,0);
+  }
+  if (mouseX > 300 && mouseX < 400){
+    rotate(radians(280));
+    image(this.imageFlip,0,0);
+  }  
+  if (mouseX > 200 && mouseX < 300){
+    rotate(radians(90));
+    image(this.image,0,0);
+  }
+  if (mouseX > 100 & mouseX < 200){
+    rotate(radians(70));
+    image(this.image,0,0);
+
+  }
+  if (mouseX < 100){
+    rotate(radians(50));
+    image(this.image,0,0);
+
+  }  
+  pop();
+
+
+} 
+
+
+
+}
+
+class Duck{
+  constructor(x,y,speed){
+    this.x = x;
+    this.y = y;
+    this.speed = speed;
+  }
+
+display(){
+
+} 
+
+move(){
+
+} 
+
+checkHit(){
+
+}
 
 
 }
