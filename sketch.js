@@ -3,6 +3,7 @@ var counter1;
 var counter2; 
 var counter3, counter4; 
 var pistol; 
+var gun;
 function preload(){
   bg = loadImage("images/duckhunt-uncleaned2.jpg");
   coin = loadImage("images/coin.png");
@@ -25,6 +26,7 @@ function setup() {
   counter3 = 1; 
   counter4 = 3; 
   myFont = loadFont('assets/AvenirNextLTPro-Demi.otf');
+  gun = new Gun("pistol",1.0);
 
 
 
@@ -54,9 +56,9 @@ function draw(){
   fill(255,255,255);
   text("x"+counter4,222,32);
 
-  var gun = new Gun("pistol",1.0);
-  gun.display();
 
+
+  gun.display();
 
 
 }
@@ -73,11 +75,13 @@ class Gun{
   }
 
 
-shot(){
-
+shoot(){
+  this.bullets--;
+  console.log("bullets now "+this.bullets);
 } 
 
 display(){
+  text("Bullets"+this.bullets,10,400);
   imageMode(CENTER);
   push();
   translate(300,460);
@@ -136,4 +140,11 @@ checkHit(){
 }
 
 
+}
+
+
+function mouseClicked(){
+  if (gun.bullets > 0){
+  gun.shoot();
+  }
 }
