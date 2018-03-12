@@ -88,14 +88,14 @@ class Gun{
   }
 
 
-shoot(mouseX, mouseY){
+shoot(mX, mY){
   this.bullets--;
   console.log("bullets now "+this.bullets);
   push();
   translate(300,460);
   ellipse(this.shotX,this.shotY,25,25);
-  this.travelX = mouseX;
-  this.travelY = mouseY; 
+  this.travelX = mX;
+  this.travelY = mY; 
   pop();
 } 
 
@@ -116,17 +116,20 @@ move(){
   }  
   if (this.bulletMove == true){
   if(this.shotX < this.travelX){
-    this.shotX++;
+    this.shotX += this.speed;
   }
   if(this.shotX > this.travelX){
-    this.shotX--;
+    this.shotX -= this.speed;
   }
   if(this.shotY < this.travelY){
-    this.shotY++;
+    this.shotY += this.speed;
   }
   if(this.shotY > this.travelY){
-    this.shotY--;
+    this.shotY -= this.speed;
   }
+  // if( (this.travelX - this.shotX) > (this.travelY - this.shotX)){
+  //   this.shotX 
+  // }
   if (calc > 300){
     this.sizeX = 25;
     this.sizeY = 25; 
@@ -233,8 +236,11 @@ checkHit(){
 
 
 function mouseClicked(){
+  console.log("how many times is this running?");
   if (gun.bullets > 0){
-  gun.shoot(mouseX,mouseY);
+    var paramX = mouseX;
+    var paramY = mouseY;
+  gun.shoot(paramX,paramY);
   gun.bulletMove = true; 
 }
 }
