@@ -4,6 +4,7 @@ var counter2;
 var counter3, counter4; 
 var pistol; 
 var gun;
+var bul; 
 function preload(){
   bg = loadImage("images/duckhunt-uncleaned2.jpg");
   coin = loadImage("images/coin.png");
@@ -27,6 +28,7 @@ function setup() {
   counter4 = 3; 
   myFont = loadFont('assets/AvenirNextLTPro-Demi.otf');
   gun = new Gun("pistol",1.0);
+  fill(255);
 
 
 
@@ -35,6 +37,7 @@ function setup() {
 function draw(){
   imageMode(CORNER);
   background(bg);
+  bul = ellipse(400,360,50,50);
 
   push();
     translate(0,0);
@@ -59,6 +62,9 @@ function draw(){
 
 
   gun.display();
+  if (gun.bulletMove == true){
+   gun.move();
+  }
 
 
 }
@@ -68,6 +74,13 @@ class Gun{
     this.type = name;
     this.bullets = 3;
     this.speed = speed;
+    this.shotX = 320;
+    this.shotY = 420; 
+    this.travelX = 0;
+    this.travelY = 0; 
+    this.sizeX = 25;
+    this.sizeY = 25; 
+    this.bulletMove = false;
     if (name == "pistol"){
       this.image = pistol;
       this.imageFlip = pistolFlip;
@@ -75,14 +88,88 @@ class Gun{
   }
 
 
-shoot(){
+shoot(mouseX, mouseY){
   this.bullets--;
   console.log("bullets now "+this.bullets);
+  push();
+  translate(300,460);
+  ellipse(this.shotX,this.shotY,25,25);
+  this.travelX = mouseX;
+  this.travelY = mouseY; 
+  pop();
 } 
+
+move(){
+  var calc = dist(this.shotX,this.shotY,this.travelX,this.travelY);
+  if (calc > 25){
+    this.bulletMove = true; 
+    console.log("bullet will move");
+  }
+  if (calc < 25){
+    this.bulletMove = false; 
+    console.log("bullet will NOT move");
+       // checkHit(); 
+    this.shotX = 320;
+    this.shotY = 420;
+    this.sizeX = 25;
+    this.sizeY = 25; 
+  }  
+  if (this.bulletMove == true){
+  if(this.shotX < this.travelX){
+    this.shotX++;
+  }
+  if(this.shotX > this.travelX){
+    this.shotX--;
+  }
+  if(this.shotY < this.travelY){
+    this.shotY++;
+  }
+  if(this.shotY > this.travelY){
+    this.shotY--;
+  }
+  if (calc > 300){
+    this.sizeX = 25;
+    this.sizeY = 25; 
+  }
+  if (calc > 200 && calc < 300){
+    this.sizeX = 20;
+    this.sizeY = 20; 
+  }
+  if (calc > 125 && calc < 150){
+    this.sizeX = 15;
+    this.sizeY = 15; 
+  }
+  if (calc > 100 && calc < 125){
+    this.sizeX = 12;
+    this.sizeY = 12; 
+  }
+  if (calc > 75 && calc < 100){
+    this.sizeX = 9;
+    this.sizeY = 9; 
+  }
+  if (calc > 50 && calc < 75){
+    this.sizeX = 7;
+    this.sizeY = 7; 
+  }  
+  if (calc > 25 && calc < 50){
+    this.sizeX = 5; 
+    this.sizeY = 5; 
+
+  }
+
+}
+text("X,Y is "+this.shotX+"and "+this.shotY,10,200);
+text("X,Y is "+this.travelX+"and "+this.travelY,10,300);
+}
 
 display(){
   text("Bullets"+this.bullets,10,400);
   imageMode(CENTER);
+
+  ellipse(this.shotX,this.shotY,this.sizeX,this.sizeY);
+  this.travelX = mouseX;
+  this.travelY = mouseY; 
+
   push();
   translate(300,460);
   if (mouseX > 500){
@@ -111,7 +198,9 @@ display(){
     image(this.image,0,0);
 
   }  
+
   pop();
+
 
 
 } 
@@ -145,6 +234,7 @@ checkHit(){
 
 function mouseClicked(){
   if (gun.bullets > 0){
-  gun.shoot();
-  }
+  gun.shoot(mouseX,mouseY);
+  gun.bulletMove = true; 
+}
 }
